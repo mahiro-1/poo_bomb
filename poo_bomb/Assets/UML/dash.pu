@@ -1,0 +1,15 @@
+@startuml しゅうとウンコダッシュのクラス図
+class Player
+class Obstacle
+
+'Obstacleクラスの子
+class Janbo
+class NomalMan
+class Car
+class Bycicle
+
+Janbo -down-|> Obstacle
+NomalMan -down-|> Obstacle
+Car -down-|> Obstacle
+Bycicle -down-|> Obstacle
+@enduml

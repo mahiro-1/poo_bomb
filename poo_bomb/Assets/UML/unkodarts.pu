@@ -1,0 +1,23 @@
+@startuml ウンコダーツ
+
+class DingleberriesView
+class FaceView
+class ButtonView
+class ToiletView
+package UnkoView {
+class BananaUnkoView
+class DeerUnkoView
+class SphereUnkoView
+}
+class Presenter
+class Model
+
+Presenter -down-> DingleberriesView
+Presenter -down-> FaceView
+Presenter -down-> ButtonView
+Presenter -down-> ToiletView
+
+Presenter -up-> Model
+Presenter ..> UnkoView : create
+
+@enduml
