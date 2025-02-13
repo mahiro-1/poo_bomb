@@ -1,0 +1,35 @@
+@startuml オウコウ料理ゲームのクラス図
+title オウコウ料理ゲームのクラス図
+
+class CookingContext
+class CookingModel
+class ComboModel
+class RythmGameModel
+class CookingPresenter
+class ComboPresenter
+class RythmGamePresenter
+class CookingView
+class ComboView
+class RythmGameView
+
+CookingContext -down-> CookingModel
+CookingContext -down-> ComboModel
+CookingContext -down-> RythmGameModel
+
+CookingPresenter -up-> CookingModel
+ComboPresenter -up-> ComboModel
+RythmGamePresenter -up-> RythmGameModel
+
+CookingPresenter <.. CookingModel : MessagePipe
+ComboPresenter <.. ComboModel : MessagePipe
+RythmGamePresenter <.. RythmGameModel : MessagePipe
+
+CookingPresenter -down-> CookingView
+ComboPresenter -down-> ComboView
+RythmGamePresenter -down-> RythmGameView
+
+CookingPresenter <.. CookingView : MessagePipe
+ComboPresenter <.. ComboView : MessagePipe
+RythmGamePresenter <.. RythmGameView : MessagePipe
+
+@enduml
