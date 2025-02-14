@@ -9,6 +9,7 @@ public class UnkoDartsPresenter : MonoBehaviour
     private int movePoleCount = 0;
     private float movePolePerCount;
     private Vector2 CapsulePos = new Vector2(0.0f, 1.3f);
+    private float MoveSpeed = 3.0f;
     [SerializeField] GameObject Capsule;
     [SerializeField] Button button;
     [SerializeField] GameObject AxisChangerR;
@@ -36,27 +37,37 @@ public class UnkoDartsPresenter : MonoBehaviour
     }
 
     //ポールをコルーチンを使って動かす
-    IEnumerator MovePole(){
-        while(true){
+    IEnumerator MovePole()
+    {
+        while (true)
+        {
             //timeOutの時間でループする
-            if(movePoleCount <= 25){
+            if (movePoleCount <= 25)
+            {
                 //Debug.Log(1);
                 AxisChangerL.transform.Rotate(0, 0, movePolePerCount);
                 AxisChangerR.transform.Rotate(0, 0, movePolePerCount);
             }
-            else if(movePoleCount <= 75){
+            else if (movePoleCount <= 75)
+            {
                 //Debug.Log(2);
                 AxisChangerL.transform.Rotate(0, 0, -movePolePerCount);
                 AxisChangerR.transform.Rotate(0, 0, -movePolePerCount);
             }
-            else if(movePoleCount <= 100){
+            else if (movePoleCount <= 100)
+            {
                 //Debug.Log(3);
                 AxisChangerL.transform.Rotate(0, 0, movePolePerCount);
                 AxisChangerR.transform.Rotate(0, 0, movePolePerCount);
             }
             movePoleCount++;
-            if(movePoleCount == 101) movePoleCount = 1;
+            if (movePoleCount == 101) movePoleCount = 1;
             yield return new WaitForSeconds(timeOut);
         }
+    }
+
+    void FixedUpdate()
+    {
+        Board.transform.position = new Vector3(Mathf.Sin(Time.time) * MoveSpeed, -4.0f, 0);
     }
 }
