@@ -1,24 +1,62 @@
+using System.Collections;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UnkoDartsPresenter : MonoBehaviour
 {
+    private const float timeOut = 0.04f;
+    private int movePoleCount = 0;
+    private float movePolePerCount;
+    private Vector2 CapsulePos = new Vector2(0.0f, 1.3f);
+    [SerializeField] GameObject Capsule;
     [SerializeField] Button button;
+    [SerializeField] GameObject AxisChangerR;
+    [SerializeField] GameObject AxisChangerL;
+    [SerializeField] GameObject Board;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         //UniRxで書いているよ。buttonがクリックされたらsubscribeの中の処理が実行される。
-        button.OnClickAsObservable().Subscribe(l => Hallo());
+        button.OnClickAsObservable().Subscribe(l => CreateCapsule());
+        //maxCount = (int)(1 / timeOut);
+        movePoleCount = 1;
+        movePolePerCount = 2;
+        StartCoroutine(MovePole());
     }
 
-    void Hallo()
+    void CreateCapsule()
     {
-        Debug.Log("Hallo!");
+        Instantiate(Capsule, CapsulePos, Quaternion.identity);
     }
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    //ポールをコルーチンを使って動かす
+    IEnumerator MovePole(){
+        while(true){
+            //timeOutの時間でループする
+            if(movePoleCount <= 25){
+                //Debug.Log(1);
+                AxisChangerL.transform.Rotate(0, 0, movePolePerCount);
+                AxisChangerR.transform.Rotate(0, 0, movePolePerCount);
+            }
+            else if(movePoleCount <= 75){
+                //Debug.Log(2);
+                AxisChangerL.transform.Rotate(0, 0, -movePolePerCount);
+                AxisChangerR.transform.Rotate(0, 0, -movePolePerCount);
+            }
+            else if(movePoleCount <= 100){
+                //Debug.Log(3);
+                AxisChangerL.transform.Rotate(0, 0, movePolePerCount);
+                AxisChangerR.transform.Rotate(0, 0, movePolePerCount);
+            }
+            movePoleCount++;
+            if(movePoleCount == 101) movePoleCount = 1;
+            yield return new WaitForSeconds(timeOut);
+        }
     }
 }
