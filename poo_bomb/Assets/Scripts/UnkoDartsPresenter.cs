@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class UnkoDartsPresenter : MonoBehaviour
 {
+    private bool unkoflag;
     private const float timeOut = 0.04f;
     private int movePoleCount = 0;
     private float movePolePerCount;
@@ -17,14 +18,24 @@ public class UnkoDartsPresenter : MonoBehaviour
     [SerializeField] GameObject AxisChangerR;
     [SerializeField] GameObject AxisChangerL;
     [SerializeField] GameObject Board;
+    [SerializeField] GameObject outSpace;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        unkoflag = false;
         //UniRxで書いているよ。buttonがクリックされたらsubscribeの中の処理が実行される。
-        button.OnClickAsObservable().Subscribe(l => CreateCapsule());
+        button.OnClickAsObservable().Where(x=> !unkoflag).Subscribe(l => {
+            CreateCapsule();
+            unkoflag = true;
+        });
 
-        Board.OnCollisionEnter2DAsObservable().Where(x => x.gameObject.tag == "Capsule").Subscribe(x => Destroy(x.gameObject));
+        Board.OnCollisionEnter2DAsObservable().Where(x => x.gameObject.tag == "Capsule").Subscribe(x => {
+            Destroy(x.gameObject);
+            unkoflag = false;
+        });
+
+        outSpace.OnTriggerEnter2DAsObservable().Subscribe(x => {unkoflag = false;});
         //maxCount = (int)(1 / timeOut);
         movePoleCount = 1;
         movePolePerCount = 2;
