@@ -1,5 +1,7 @@
 using System.Collections;
 using UniRx;
+using UniRx.Triggers;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,11 +17,14 @@ public class UnkoDartsPresenter : MonoBehaviour
     [SerializeField] GameObject AxisChangerR;
     [SerializeField] GameObject AxisChangerL;
     [SerializeField] GameObject Board;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         //UniRxで書いているよ。buttonがクリックされたらsubscribeの中の処理が実行される。
         button.OnClickAsObservable().Subscribe(l => CreateCapsule());
+
+        Board.OnCollisionEnter2DAsObservable().Where(x => x.gameObject.tag == "Capsule").Subscribe(x => Destroy(x.gameObject));
         //maxCount = (int)(1 / timeOut);
         movePoleCount = 1;
         movePolePerCount = 2;
