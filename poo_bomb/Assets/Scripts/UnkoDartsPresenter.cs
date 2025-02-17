@@ -29,25 +29,30 @@ public class UnkoDartsPresenter : MonoBehaviour
         score = 0;
         unkoflag = false;
         //UniRxで書いているよ。buttonがクリックされたらsubscribeの中の処理が実行される。
-        button.OnClickAsObservable().Where(x=> !unkoflag).Subscribe(l => {
+        button.OnClickAsObservable().Where(x => !unkoflag).Subscribe(l =>
+        {
             CreateCapsule();
             unkoflag = true;
         });
 
-        Board.OnCollisionEnter2DAsObservable().Where(x => x.gameObject.tag == "Capsule").Subscribe(x => {
+        Board.OnCollisionEnter2DAsObservable().Where(x => x.gameObject.tag == "Capsule").Subscribe(x =>
+        {
             Vector2 hitPos = x.contacts[0].point;
             //Debug.Log(hitPos.x - Board.transform.position.x);
             float difx = hitPos.x - Board.transform.position.x;
-            if(difx < 0) difx = -difx;
-            if(difx <= 0.2){
+            if (difx < 0) difx = -difx;
+            if (difx <= 0.2)
+            {
                 score += 3;
                 //Debug.Log("point 3!");
             }
-            else if(difx <= 0.6){
+            else if (difx <= 0.6)
+            {
                 score += 2;
                 //Debug.Log("point 2!");
             }
-            else{
+            else
+            {
                 score += 1;
                 //Debug.Log("point 1!");
             }
@@ -55,7 +60,7 @@ public class UnkoDartsPresenter : MonoBehaviour
             Destroy(x.gameObject);
             unkoflag = false;
         });
-        outSpace.OnTriggerEnter2DAsObservable().Subscribe(x => {unkoflag = false;});
+        outSpace.OnTriggerEnter2DAsObservable().Subscribe(x => { unkoflag = false; });
         //maxCount = (int)(1 / timeOut);
         movePoleCount = 1;
         movePolePerCount = 2;
@@ -104,6 +109,6 @@ public class UnkoDartsPresenter : MonoBehaviour
 
     void FixedUpdate()
     {
-        Board.transform.position = new Vector3(Mathf.Sin(Time.time) * MoveSpeed, -4.0f, 0);
+        Board.transform.position = new Vector3(Mathf.Sin(Time.time) * MoveSpeed, -3.0f, 0);
     }
 }
