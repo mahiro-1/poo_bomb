@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UniRx;
 using UniRx.Triggers;
 using Unity.Collections;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 
 public class UnkoDartsPresenter : MonoBehaviour
 {
+    private int score;
     private bool unkoflag;
     private const float timeOut = 0.04f;
     private int movePoleCount = 0;
@@ -19,10 +21,12 @@ public class UnkoDartsPresenter : MonoBehaviour
     [SerializeField] GameObject AxisChangerL;
     [SerializeField] GameObject Board;
     [SerializeField] GameObject outSpace;
-    
+    [SerializeField] TextMeshProUGUI scoreBoard;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        score = 0;
         unkoflag = false;
         //UniRxで書いているよ。buttonがクリックされたらsubscribeの中の処理が実行される。
         button.OnClickAsObservable().Where(x=> !unkoflag).Subscribe(l => {
@@ -31,10 +35,26 @@ public class UnkoDartsPresenter : MonoBehaviour
         });
 
         Board.OnCollisionEnter2DAsObservable().Where(x => x.gameObject.tag == "Capsule").Subscribe(x => {
+            Vector2 hitPos = x.contacts[0].point;
+            //Debug.Log(hitPos.x - Board.transform.position.x);
+            float difx = hitPos.x - Board.transform.position.x;
+            if(difx < 0) difx = -difx;
+            if(difx <= 0.2){
+                score += 3;
+                //Debug.Log("point 3!");
+            }
+            else if(difx <= 0.6){
+                score += 2;
+                //Debug.Log("point 2!");
+            }
+            else{
+                score += 1;
+                //Debug.Log("point 1!");
+            }
+            scoreBoard.text = "Score: " + score.ToString();
             Destroy(x.gameObject);
             unkoflag = false;
         });
-
         outSpace.OnTriggerEnter2DAsObservable().Subscribe(x => {unkoflag = false;});
         //maxCount = (int)(1 / timeOut);
         movePoleCount = 1;
