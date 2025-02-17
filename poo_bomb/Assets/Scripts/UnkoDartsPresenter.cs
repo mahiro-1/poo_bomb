@@ -13,7 +13,7 @@ public class UnkoDartsPresenter : MonoBehaviour
     private const float timeOut = 0.04f;
     private int movePoleCount = 0;
     private float movePolePerCount;
-    private Vector2 CapsulePos = new Vector2(0.0f, 1.3f);
+    private Vector2 CapsulePos = new Vector2(0.0f, 4.0f);
     private float MoveSpeed = 3.0f;
     [SerializeField] GameObject Capsule;
     [SerializeField] Button button;
