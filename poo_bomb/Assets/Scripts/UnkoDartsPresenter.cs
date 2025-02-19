@@ -2,7 +2,6 @@ using System.Collections;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
-using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
