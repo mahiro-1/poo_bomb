@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Note: {fileID: 3178602602498630535, guid: a65d84a31cff0fb4ebcba8425b13bff7, type: 3}
   TouchBar: {fileID: 374837410}
+  comboText: {fileID: 1071688910}
 --- !u!4 &265942949
 Transform:
   m_ObjectHideFlags: 0
@@ -246,8 +247,8 @@ Transform:
   m_GameObject: {fileID: 374634161}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.1, z: 0}
-  m_LocalScale: {x: 6.8, y: 3.825, z: 0.425}
+  m_LocalPosition: {x: 0, y: 3.41, z: 0}
+  m_LocalScale: {x: 5.62, y: 3.1612499, z: 0.35125}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -335,7 +336,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -4.3, z: 0}
-  m_LocalScale: {x: 7.04, y: 0.22, z: 0.22}
+  m_LocalScale: {x: 5.67, y: 0.1771875, z: 0.1771875}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}

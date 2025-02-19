@@ -7,6 +7,7 @@ using UniRx;
 using UniRx.Triggers;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using TMPro;
 
 public class CookingPresenter : MonoBehaviour
 {
@@ -41,10 +42,12 @@ public class CookingPresenter : MonoBehaviour
     private float[] touchBarPosX = {-2.5f, -1.5f, -0.5f, 0.5f, 1.5f, 2.5f};
     private float touchBarPosYMax =-3.0f;
     private float touchBarPosYMin =-4.9f;
+    private int combo = 0;
+    [SerializeField] private TextMeshProUGUI comboText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        //TouchBar.On
+        
         
         MusicReading();
         //音ゲーを開始する関数（後でボタンを押されたときに始めるとかにするで）
@@ -92,7 +95,7 @@ public class CookingPresenter : MonoBehaviour
             //ノーツ生成処理
             if(notesAddress.Count > gameCount){
                 foreach(int block in notesAddress[gameCount]){
-                    GameObject nnote = Instantiate(Note, new Vector3(blockPos[block],1.2f,0f), Quaternion.Euler(0,0,90));
+                    GameObject nnote = Instantiate(Note, new Vector3(blockPos[block],2f,0f), Quaternion.Euler(0,0,90));
                     nowNotes.Add(nnote);
                 }
             }
@@ -104,6 +107,7 @@ public class CookingPresenter : MonoBehaviour
                 x.transform.position += new Vector3(0f, -moveSpeed, 0f);
                 if(x.transform.position.y < -5.0f){
                     destroyNotes.Add(x);
+                    combo = 0;
                 }
             }
             foreach(var x in destroyNotes){
@@ -135,8 +139,9 @@ public class CookingPresenter : MonoBehaviour
                             }
                             
                             //ノーツ判定＆ノーツ破壊
-                            if(CandidateNote.transform.position.y < -3f){
-                                Debug.Log("Good!");
+                            if(CandidateNote.transform.position.y < -3.5f && CandidateNote.transform.position.y > -4.5f){
+                                combo++;
+                                //Debug.Log("Good!");
                             }
                             Destroy(CandidateNote);
                             nowNotes.Remove(CandidateNote);
@@ -151,6 +156,6 @@ public class CookingPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        comboText.text = "Combo: " + combo.ToString();
     }
 }
