@@ -92,7 +92,8 @@ public class UnkoDartsPresenter : MonoBehaviour
     }
     void SceneLoad()
     {
-        SceneManager.LoadScene("EndScreen");
+        //SceneManager.LoadScene("EndScreen");
+        SceneLoader.NextScene();
     }
 
     //ポールをコルーチンを使って動かす

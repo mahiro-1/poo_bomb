@@ -100,7 +100,7 @@ public class CookingPresenter : MonoBehaviour
                 }
             }
             gameCount++;
-            if(gameCount == 5000) SceneLoader.NextScene();
+            if(gameCount == 400) SceneLoader.NextScene();
 
             //ノーツ移動処理＆破壊処理
             List<GameObject> destroyNotes = new List<GameObject>();
