@@ -16,7 +16,14 @@ public class EndscreenPresenter : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        end_button.OnClickAsObservable().Subscribe(x => SceneManager.LoadScene("StartScreen"));
+        end_button.OnClickAsObservable().Subscribe(x => {
+            //テスト用！後で消してねーーーーーーーーーーーーーー
+            //SaveManeger.Init();
+            //ーーーーーーーーーーーーーーーーーーーーーーーーー
+            SaveManeger.SaveFile();
+            //SceneManager.LoadScene("StartScreen");
+            SceneLoader.NextScene();
+        });
     }
 
     // Update is called once per frame

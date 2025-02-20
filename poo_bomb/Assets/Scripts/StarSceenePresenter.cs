@@ -4,6 +4,7 @@ using UniRx;
 using UniRx.Triggers;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StarSceenePresenter : MonoBehaviour
@@ -14,9 +15,22 @@ public class StarSceenePresenter : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        start_button.OnClickAsObservable().Subscribe(x => Debug.Log("START！"));
-        option_button.OnClickAsObservable().Subscribe(x => Debug.Log("OPTION！"));
-        score_button.OnClickAsObservable().Subscribe(x => Debug.Log("SCORE！"));
+        SceneLoader.Init();
+        SaveManeger.Init();
+        start_button.OnClickAsObservable().Subscribe(x => {
+            Debug.Log("START！");
+            //SceneManager.LoadScene("Cooking");
+            SceneLoader.NextScene();
+        });
+        option_button.OnClickAsObservable().Subscribe(x => {
+            Debug.Log("OPTION！");
+            SceneLoader.GoOptionScreen();
+        });
+        score_button.OnClickAsObservable().Subscribe(x => {
+            Debug.Log("SCORE！");
+            //SceneManager.LoadScene("ScoreScreen");
+            SceneLoader.GoScoreScreen();
+        });
     }
 
     // Update is called once per frame
