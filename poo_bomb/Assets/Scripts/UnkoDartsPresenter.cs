@@ -21,6 +21,8 @@ public class UnkoDartsPresenter : MonoBehaviour
     [SerializeField] GameObject Board;
     [SerializeField] GameObject outSpace;
     [SerializeField] TextMeshProUGUI scoreBoard;
+    [SerializeField] private float countdown = 60.0f;
+    [SerializeField] public TextMeshProUGUI timeText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -73,7 +75,12 @@ public class UnkoDartsPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        countdown -= Time.deltaTime;
+        timeText.text = countdown.ToString("f1") + "秒";
+        if (countdown <= 0)
+        {
+            timeText.text = "終了!";
+        }
     }
 
     //ポールをコルーチンを使って動かす
