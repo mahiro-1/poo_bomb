@@ -4,6 +4,8 @@ using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
 
 public class UnkoDartsPresenter : MonoBehaviour
 {
@@ -23,6 +25,7 @@ public class UnkoDartsPresenter : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreBoard;
     [SerializeField] private float countdown = 60.0f;
     [SerializeField] public TextMeshProUGUI timeText;
+    public int delay = 5; //遅延させたい秒数
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -75,12 +78,21 @@ public class UnkoDartsPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        countdown -= Time.deltaTime;
-        timeText.text = countdown.ToString("f1") + "秒";
-        if (countdown <= 0)
+        if (countdown >= 0)
+        {
+            countdown -= Time.deltaTime;
+            timeText.text = countdown.ToString("f1") + "秒";
+        }
+        else
         {
             timeText.text = "終了!";
+            unkoflag = true;
+            Invoke(nameof(SceneLoad), delay);
         }
+    }
+    void SceneLoad()
+    {
+        SceneManager.LoadScene("EndScreen");
     }
 
     //ポールをコルーチンを使って動かす

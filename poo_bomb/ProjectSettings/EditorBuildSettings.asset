@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/UnkoDarts.unity
     guid: fef41c386476bdf49adadb7953792838
   - enabled: 1
@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StartScreen.unity
     guid: a2475257c89f4fc499fc4b3d71423876
+  - enabled: 1
+    path: Assets/Scenes/EndScreen.unity
+    guid: ac6ab9b75eebea74ea9c55f2337bd474
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: a6c7c8863241e3341b5b4c92413faa46, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 69f2c8c310d098d4382e15ffca1533f4, type: 2}
