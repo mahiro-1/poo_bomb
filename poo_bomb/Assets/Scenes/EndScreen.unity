@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   end_button: {fileID: 1702188893}
+  Startscreen: 
 --- !u!4 &22143440
 Transform:
   m_ObjectHideFlags: 0
