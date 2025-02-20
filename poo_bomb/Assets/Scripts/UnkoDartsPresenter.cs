@@ -29,8 +29,8 @@ public class UnkoDartsPresenter : MonoBehaviour
     {
         score = 0;
         unkoflag = false;
-        //UniRxで書いているよ。buttonがクリックされたらsubscribeの中の処理が実行される。
-        button.OnClickAsObservable().Where(x => !unkoflag).Subscribe(l =>
+        //UniRxで書いているよ。画面がクリックされたらsubscribeの中の処理が実行される。
+        Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0) && !unkoflag).Subscribe(_ =>
         {
             CreateCapsule();
             unkoflag = true;
