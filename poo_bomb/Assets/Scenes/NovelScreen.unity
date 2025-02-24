@@ -302,8 +302,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   storyDatas:
   - {fileID: 11400000, guid: f9962b2efee9726449056aea4d40d595, type: 2}
-  - {fileID: 11400000, guid: f9962b2efee9726449056aea4d40d595, type: 2}
-  - {fileID: 11400000, guid: f9962b2efee9726449056aea4d40d595, type: 2}
   background: {fileID: 771805202}
   characterImage: {fileID: 1202902917}
   storyText: {fileID: 1871112295}
