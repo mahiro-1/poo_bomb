@@ -18,7 +18,7 @@ MonoBehaviour:
     StoryText: "\u3053\u3093\u306B\u3061\u308F"
     CharacterName: "\u5C71\u68A8\u3055\u3093"
   - Background: {fileID: 1716783696513132305, guid: 74ba653e50449e54ea8f49c269889f60, type: 3}
-    CharacterImage: {fileID: -7507346280330510195, guid: b445e0acf897f464a82dc56808baf6e2, type: 3}
+    CharacterImage: {fileID: -8490425521646422072, guid: 99334acc903eb1442b47770e2ab9af86, type: 3}
     StoryText: "\u4ECA\u65E5\u3082\u304C\u3093\u3070\u308B\u305E\uFF01"
     CharacterName: "\u5C71\u68A8\u3055\u3093"
   - Background: {fileID: 1716783696513132305, guid: 74ba653e50449e54ea8f49c269889f60, type: 3}
