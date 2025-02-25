@@ -19,28 +19,38 @@ public static class SceneLoader
     };
     private static int nowIndex;
 
-    public static void Init(){
+    public static void Init()
+    {
         nowIndex = 0;
         storyIndex = 0;
     }
-    public static int GetStoryIndex(){
+    public static int GetStoryIndex()
+    {
         return storyIndex;
     }
-    public static void NextScene(){
-        if(sceneNameOrder[nowIndex] == "NovelScreen") storyIndex++;
+    public static void NextScene()
+    {
+        if (sceneNameOrder[nowIndex] == "NovelScreen") storyIndex++;
         nowIndex++;
-        if(nowIndex >= sceneNameOrder.Length){
+        if (nowIndex >= sceneNameOrder.Length)
+        {
             nowIndex = 0;
             storyIndex = 0;
         }
-        
+
         SceneManager.LoadScene(sceneNameOrder[nowIndex]);
     }
-    public static void GoScoreScreen(){
+    public static void GoScoreScreen()
+    {
         SceneManager.LoadScene("ScoreScreen");
     }
-    public static void GoOptionScreen(){
+    public static void GoOptionScreen()
+    {
         SceneManager.LoadScene("OptionScreen");
     }
-    
+
+    public static void ReturnStartScreen()
+    {
+        SceneManager.LoadScene("StartScreen");
+    }
 }
