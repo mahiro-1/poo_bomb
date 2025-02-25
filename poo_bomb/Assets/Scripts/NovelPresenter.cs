@@ -31,20 +31,22 @@ public class Presenter : MonoBehaviour
     private void OnNextText()
     {
         textIndex++;
+        storyText.text = "";
         if (textIndex >= storyDatas[storyIndex].stories.Count)
         {
             SceneLoader.NextScene();
         }
-        storyText.text = "";
-        SetStoryElement(storyIndex, textIndex);
+        else{
+            SetStoryElement(storyIndex, textIndex);
+        }
     }
 
     private void SetStoryElement(int _storyIndex, int _textIndex)
     {
-        var storyElement = storyDatas[_storyIndex];
-        background.sprite = storyElement.stories[_textIndex].Background;
-        characterImage.sprite = storyElement.stories[_textIndex].CharacterImage;
-        storyText.text = storyElement.stories[_textIndex].StoryText;
-        characterName.text = storyElement.stories[_textIndex].CharacterName;
+        var storyElement = storyDatas[_storyIndex].stories[_textIndex];
+        background.sprite = storyElement.Background;
+        characterImage.sprite = storyElement.CharacterImage;
+        storyText.text = storyElement.StoryText;
+        characterName.text = storyElement.CharacterName;
     }
 }
