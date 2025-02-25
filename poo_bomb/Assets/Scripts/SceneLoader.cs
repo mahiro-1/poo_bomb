@@ -27,9 +27,11 @@ public static class SceneLoader
         return storyIndex;
     }
     public static void NextScene(){
+        if(sceneNameOrder[nowIndex] == "NovelScreen") storyIndex++;
         nowIndex++;
         if(nowIndex >= sceneNameOrder.Length){
             nowIndex = 0;
+            storyIndex = 0;
         }
         
         SceneManager.LoadScene(sceneNameOrder[nowIndex]);
