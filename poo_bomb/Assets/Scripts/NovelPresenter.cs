@@ -13,19 +13,14 @@ public class Presenter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI storyText;
     [SerializeField] private TextMeshProUGUI characterName;
     private Boolean endflag = false;
-
-    public int storyIndex { get; private set; }
     public int textIndex { get; private set; }
+    private int storyIndex;
 
     private void Awake()
     {
-        storyIndex = 0;
         textIndex = 0;
+        storyIndex = SceneLoader.GetStoryIndex();
         SetStoryElement(storyIndex, textIndex);
-    }
-
-    private void Start()
-    {
         // 一度だけクリックイベントを購読
         Observable.EveryUpdate()
             .Where(_ => Input.GetMouseButtonDown(0) && endflag == false)
@@ -33,38 +28,23 @@ public class Presenter : MonoBehaviour
             .Subscribe(_ => OnNextText())
             .AddTo(this);
     }
-
     private void OnNextText()
     {
         textIndex++;
-
-        // 現在のストーリーが最後の要素に到達した場合
         if (textIndex >= storyDatas[storyIndex].stories.Count)
         {
-            storyIndex++;
-            textIndex = 0;
-
-            if (storyIndex >= storyDatas.Length) // ストーリーが終了した場合
-            {
-                endflag = true;
-            }
+            SceneLoader.NextScene();
         }
-
-        if (storyIndex < storyDatas.Length && textIndex < storyDatas[storyIndex].stories.Count)
-        {
-            storyText.text = "";
-            SetStoryElement(storyIndex, textIndex);
-        }
+        storyText.text = "";
+        SetStoryElement(storyIndex, textIndex);
     }
-
-
 
     private void SetStoryElement(int _storyIndex, int _textIndex)
     {
-        var storyElement = storyDatas[_storyIndex].stories[_textIndex];
-        background.sprite = storyElement.Background;
-        characterImage.sprite = storyElement.CharacterImage;
-        storyText.text = storyElement.StoryText;
-        characterName.text = storyElement.CharacterName;
+        var storyElement = storyDatas[_storyIndex];
+        background.sprite = storyElement.stories[_textIndex].Background;
+        characterImage.sprite = storyElement.stories[_textIndex].CharacterImage;
+        storyText.text = storyElement.stories[_textIndex].StoryText;
+        characterName.text = storyElement.stories[_textIndex].CharacterName;
     }
 }
