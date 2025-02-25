@@ -304,6 +304,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f9962b2efee9726449056aea4d40d595, type: 2}
   - {fileID: 11400000, guid: e3b4aeecfe278154d84e99f17e7e2544, type: 2}
   - {fileID: 11400000, guid: 7fd0220476e30eb46ac6c34196cf2e73, type: 2}
+  - {fileID: 11400000, guid: e2b917b1e32acfb4e84c984f60bd178b, type: 2}
   background: {fileID: 771805202}
   characterImage: {fileID: 1202902917}
   storyText: {fileID: 1871112295}
@@ -660,7 +661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -57.49, y: 79.14}
+  m_AnchoredPosition: {x: -57.490005, y: 79.14}
   m_SizeDelta: {x: -116.88, y: -89.56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &704949230
