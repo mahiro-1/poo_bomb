@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public static class SceneLoader
 {
+    private static int storyIndex = 0;
+
     private static string[] sceneNameOrder = {
         "StartScreen",
         "NovelScreen",
@@ -19,10 +21,17 @@ public static class SceneLoader
 
     public static void Init(){
         nowIndex = 0;
+        storyIndex = 0;
+    }
+    public static int GetStoryIndex(){
+        return storyIndex;
     }
     public static void NextScene(){
         nowIndex++;
-        if(nowIndex >= sceneNameOrder.Length) nowIndex = 0;
+        if(nowIndex >= sceneNameOrder.Length){
+            nowIndex = 0;
+        }
+        
         SceneManager.LoadScene(sceneNameOrder[nowIndex]);
     }
     public static void GoScoreScreen(){
