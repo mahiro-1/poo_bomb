@@ -9,6 +9,7 @@ using System;
 
 public class UnkoDartsPresenter : MonoBehaviour
 {
+    private bool isEnd;
     private int score;
     private bool unkoflag;
     private const float timeOut = 0.04f;
@@ -32,6 +33,7 @@ public class UnkoDartsPresenter : MonoBehaviour
     {
         score = 0;
         unkoflag = false;
+        isEnd = false;
         //UniRxで書いているよ。画面がクリックされたらsubscribeの中の処理が実行される。
         Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0) && !unkoflag).Subscribe(_ =>
         {
@@ -87,7 +89,10 @@ public class UnkoDartsPresenter : MonoBehaviour
         {
             timeText.text = "終了!";
             unkoflag = true;
-            Invoke(nameof(SceneLoad), delay);
+            if(!isEnd){
+                Invoke(nameof(SceneLoad), delay);
+                isEnd = true;
+            }
         }
     }
     void SceneLoad()

@@ -30,6 +30,7 @@ public static class SceneLoader
     }
     public static void NextScene()
     {
+        Debug.Log(storyIndex);
         if (sceneNameOrder[nowIndex] == "NovelScreen") storyIndex++;
         nowIndex++;
         if (nowIndex >= sceneNameOrder.Length)
