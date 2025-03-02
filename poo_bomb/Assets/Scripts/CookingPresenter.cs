@@ -36,7 +36,8 @@ public class CookingPresenter : MonoBehaviour
     private List<GameObject> nowNotes;
     [SerializeField] GameObject Note;
     [SerializeField] GameObject TouchBar;
-    private float moveSpeed = 0.18f;
+    [SerializeField] AudioSource rythmGameAudio;
+    private float moveSpeed = 0.19f;
     private float timeOut = 0.03f;
     private float[] blockPos = {-2f,-1f,0f,1f,2f};
     private float[] touchBarPosX = {-2.5f, -1.5f, -0.5f, 0.5f, 1.5f, 2.5f};
@@ -56,13 +57,16 @@ public class CookingPresenter : MonoBehaviour
     void MusicReading()
     {
         //ノーツの配置を読み込み、成型
-        string inputString = Resources.Load<TextAsset>("testbgm").ToString();
+        string inputString = Resources.Load<TextAsset>("shining_star").ToString();
         InputJson inputJson = JsonUtility.FromJson<InputJson>(inputString);
 
         scoreNum = new int[inputJson.notes.Length];
         scoreBlock = new int[inputJson.notes.Length];
         BPM = inputJson.BPM;
         LPB = inputJson.notes[0].LPB;
+
+        timeOut = 60.0f / (float)BPM / (float)LPB;
+        moveSpeed = 6.0f / timeOut;
         /*
         for (int i = 0; i < inputJson.notes.Length; i++)
         {
@@ -85,6 +89,8 @@ public class CookingPresenter : MonoBehaviour
         gameCount = 0;
         nowNotes = new List<GameObject>();
         //ノーツを生成する関数を繰り返し呼び出すやつ。繰り返す秒数は音楽のLPBに合わせる
+        BGMPlayer.Stop();
+        rythmGameAudio.Play();
         StartCoroutine(MoveNotes());
     }
 
@@ -100,7 +106,7 @@ public class CookingPresenter : MonoBehaviour
                 }
             }
             gameCount++;
-            if(gameCount == 400) SceneLoader.NextScene();
+            //if(gameCount == 400) SceneLoader.NextScene();
 
             //ノーツ移動処理＆破壊処理
             List<GameObject> destroyNotes = new List<GameObject>();
