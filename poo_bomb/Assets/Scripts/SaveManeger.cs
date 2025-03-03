@@ -29,22 +29,22 @@ public static class SaveManeger
     //新しくゲームが始まったときは必ず呼ぶこと！
     public static void Init()
     {
-        filePath = UnityEngine.Application.dataPath + "/" + fileName;
+        filePath = GetWritableDirectoryPath() + "/" + fileName;
         saveData = new SaveData();
         onceScore = new OnceScore();
         onceScore.CookingScore = 0;
         onceScore.DashScore = 0;
         onceScore.DartsScore = 0;
-        if (!File.Exists(filePath))
-        {
-            string json = "";
-            StreamWriter wr = new StreamWriter(filePath, false);
-            wr.WriteLine(json);
-            wr.Close();
-        }
+        
     }
     public static void LoadFile()
     {
+        if (!File.Exists(filePath))
+        {
+            StreamWriter wr = new StreamWriter(filePath, false);
+            wr.WriteLine("");
+            wr.Close();
+        }
         StreamReader rd = new StreamReader(filePath);
         string json = rd.ReadToEnd();
         rd.Close();
@@ -85,5 +85,22 @@ public static class SaveManeger
         StreamWriter wr = new StreamWriter(filePath, false);
         wr.WriteLine(json);
         wr.Close();
+    }
+
+    public static string GetWritableDirectoryPath()
+    {
+        // Androidの場合、Application.persistentDataPathでは外部から読み出せる場所に保存されてしまうため
+        // アプリをアンインストールしてもファイルが残ってしまう
+        // ここではアプリ専用領域に保存するようにする
+        #if !UNITY_EDITOR && UNITY_ANDROID
+            using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            using (var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
+            using (var getFilesDir = currentActivity.Call<AndroidJavaObject>("getFilesDir"))
+            {
+                return getFilesDir.Call<string>("getCanonicalPath");
+            }
+        #else
+            return Application.persistentDataPath;
+        #endif
     }
 }
