@@ -66,7 +66,7 @@ public class CookingPresenter : MonoBehaviour
         LPB = inputJson.notes[0].LPB;
 
         timeOut = 60.0f / (float)BPM / (float)LPB;
-        moveSpeed = 6.0f / timeOut;
+        moveSpeed = 6.0f / timeOut / 60;
         /*
         for (int i = 0; i < inputJson.notes.Length; i++)
         {
@@ -90,7 +90,7 @@ public class CookingPresenter : MonoBehaviour
         nowNotes = new List<GameObject>();
         //ノーツを生成する関数を繰り返し呼び出すやつ。繰り返す秒数は音楽のLPBに合わせる
         BGMPlayer.Stop();
-        rythmGameAudio.Play();
+        
         StartCoroutine(MoveNotes());
     }
 
@@ -101,9 +101,12 @@ public class CookingPresenter : MonoBehaviour
             //ノーツ生成処理
             if(notesAddress.Count > gameCount){
                 foreach(int block in notesAddress[gameCount]){
-                    GameObject nnote = Instantiate(Note, new Vector3(blockPos[block],2f,0f), Quaternion.Euler(0,0,90));
+                    GameObject nnote = Instantiate(Note, new Vector3(blockPos[block],1.75f,0f), Quaternion.Euler(0,0,90));
                     nowNotes.Add(nnote);
                 }
+            }
+            if(gameCount == 5){
+                rythmGameAudio.Play();
             }
             gameCount++;
             //if(gameCount == 400) SceneLoader.NextScene();
