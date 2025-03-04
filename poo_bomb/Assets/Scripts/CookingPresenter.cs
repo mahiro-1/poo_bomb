@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Video;
 using UniRx;
-using UniRx.Triggers;
-using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 using TMPro;
 using UnityEngine.UI;
+
 
 public class CookingPresenter : MonoBehaviour
 {
@@ -48,14 +44,26 @@ public class CookingPresenter : MonoBehaviour
     private float touchBarPosYMax = -3.0f;
     private float touchBarPosYMin = -4.9f;
     private int combo = 0;
+    private float score = 0;
+    private float maxScore = 1000f;
     private float elapsedTime = 0;
     private int gameCount;
     private bool isGameStart = false;
     private float countBasedTime;
     private bool isMusicPlay;
+    private float scorePerNotes;
     [SerializeField] private TextMeshProUGUI comboText;
+    [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Button startButton;
     [SerializeField] private GameObject buttonPanel;
+    [SerializeField] private TextMeshProUGUI jadgeText;
+    [SerializeField] private Canvas canvas;
+    enum Jadges : int{
+        Perfect,
+        Good,
+        Miss
+    }
+    List<TextMeshProUGUI> jadgeTexts;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -77,6 +85,7 @@ public class CookingPresenter : MonoBehaviour
         BPM = inputJson.BPM;
         LPB = inputJson.notes[0].LPB;
         countBasedTime = 60.0f / BPM / LPB;
+        scorePerNotes = maxScore / (float)inputJson.notes.Length;
         /*
         for (int i = 0; i < inputJson.notes.Length; i++)
         {
@@ -102,14 +111,48 @@ public class CookingPresenter : MonoBehaviour
         gameCount = -1;
         elapsedTime = 0;
         nowNotes = new List<GameObject>();
+        jadgeTexts = new List<TextMeshProUGUI>();
         isGameStart = true;
         isMusicPlay = false;
+    }
+    void ShowJadgeText(Jadges j){
+        TextMeshProUGUI ntext = Instantiate<TextMeshProUGUI>(jadgeText,new Vector3(0f,0f,0f),Quaternion.identity);
+        ntext.transform.SetParent(canvas.transform, false);
+        ntext.transform.position = new Vector3(2.0f,-1.0f,1.0f);
+        if(j == Jadges.Perfect){
+            ntext.text = "Perfect!";
+            ntext.color = new Color(44f/256f,180f/256f,173f/256f);
+        }
+        else if(j == Jadges.Good){
+            ntext.text = "Good";
+            ntext.color = new Color(237f/256f,222f/256f,123f/256f);
+        }
+        else if(j == Jadges.Miss){
+            ntext.text = "Miss...";
+            ntext.color = new Color(0f/256f,77f/256f,37f/256f);
+        }
+        jadgeTexts.Add(ntext);
+    }
+    void MoveJadgeText(){
+        List<TextMeshProUGUI> destroyText = new List<TextMeshProUGUI>();
+        foreach(TextMeshProUGUI ntext in jadgeTexts){
+            ntext.transform.position += new Vector3(0f,0.05f,0f);
+            ntext.color += new Color(0f,0f,0f,-0.07f);
+            if(ntext.color.a <= 0f){
+                destroyText.Add(ntext);
+            }
+        }
+        foreach(TextMeshProUGUI ntext in destroyText){
+            Destroy(ntext.gameObject);
+            jadgeTexts.Remove(ntext);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         comboText.text = "Combo: " + combo.ToString();
+        scoreText.text = "Score: " + Math.Floor(score).ToString();
 
         //画面タッチ判定
         int touchCount = Input.touchCount;
@@ -128,6 +171,7 @@ public class CookingPresenter : MonoBehaviour
                     {
                         //Debug.Log("touch Bar" + blockPos[j]);
                         //jがブロックの位置の配列の場所を表す
+                        //nowNotesの中で一番バーに近いやつを見つける
                         GameObject CandidateNote = new GameObject();
                         CandidateNote.transform.position = new Vector3(0f, 10f, 0f);
                         foreach (var x in nowNotes)
@@ -142,13 +186,39 @@ public class CookingPresenter : MonoBehaviour
                         }
 
                         //ノーツ判定＆ノーツ破壊
-                        if (CandidateNote.transform.position.y < -3.5f && CandidateNote.transform.position.y > -4.5f)
-                        {
+                        float y = CandidateNote.transform.position.y;
+                        if(y < -4.5f){
+                            //Good
+                            ShowJadgeText(Jadges.Good);
+                            Destroy(CandidateNote);
+                            nowNotes.Remove(CandidateNote);
                             combo++;
-                            //Debug.Log("Good!");
+                            score += scorePerNotes * 0.5f;
                         }
-                        Destroy(CandidateNote);
-                        nowNotes.Remove(CandidateNote);
+                        else if(y < -4f){
+                            //Perfect
+                            ShowJadgeText(Jadges.Perfect);
+                            Destroy(CandidateNote);
+                            nowNotes.Remove(CandidateNote);
+                            combo++;
+                            score += scorePerNotes * 1.0f;
+                        }
+                        else if(y < -3.5f){
+                            //Good
+                            ShowJadgeText(Jadges.Good);
+                            Destroy(CandidateNote);
+                            nowNotes.Remove(CandidateNote);
+                            combo++;
+                            score += scorePerNotes * 0.5f;
+                        }
+                        else if(y < -3f){
+                            //Miss
+                            ShowJadgeText(Jadges.Miss);
+                            Destroy(CandidateNote);
+                            nowNotes.Remove(CandidateNote);
+                            combo = 0;
+                        }
+
                     }
                 }
             }
@@ -156,8 +226,8 @@ public class CookingPresenter : MonoBehaviour
     }
     void FixedUpdate()
     {
-
         if(!isGameStart) return;
+        MoveJadgeText();
         if(elapsedTime >= musicOffset && !isMusicPlay){
             rythmGameAudio.Play();
             isMusicPlay = true;
@@ -188,6 +258,8 @@ public class CookingPresenter : MonoBehaviour
             x.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0f, -moveSpeed);
             if (x.transform.position.y < -5.0f)
             {
+                //Miss
+                ShowJadgeText(Jadges.Miss);
                 destroyNotes.Add(x);
                 combo = 0;
             }
