@@ -10,7 +10,9 @@ using System;
 public class UnkoDartsPresenter : MonoBehaviour
 {
     private bool isEnd;
-    private int score;
+    private float score;
+    private float maxScore = 1000;
+    [SerializeField] private float maxPoint = 20;
     private bool unkoflag;
     private const float timeOut = 0.04f;
     private int movePoleCount = 0;
@@ -31,7 +33,7 @@ public class UnkoDartsPresenter : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        score = 0;
+        score = 0f;
         unkoflag = false;
         isEnd = false;
         //UniRxで書いているよ。画面がクリックされたらsubscribeの中の処理が実行される。
@@ -49,20 +51,20 @@ public class UnkoDartsPresenter : MonoBehaviour
             if (difx < 0) difx = -difx;
             if (difx <= 0.2)
             {
-                score += 3;
+                score += maxScore / maxPoint * 3;
                 //Debug.Log("point 3!");
             }
             else if (difx <= 0.6)
             {
-                score += 2;
+                score += maxScore / maxPoint * 2;
                 //Debug.Log("point 2!");
             }
             else
             {
-                score += 1;
+                score += maxScore / maxPoint * 1;
                 //Debug.Log("point 1!");
             }
-            scoreBoard.text = "Score: " + score.ToString();
+            scoreBoard.text = "Score: " + Math.Floor(score).ToString();
             Destroy(x.gameObject);
             unkoflag = false;
         });
@@ -91,6 +93,7 @@ public class UnkoDartsPresenter : MonoBehaviour
             unkoflag = true;
             if(!isEnd){
                 Invoke(nameof(SceneLoad), delay);
+                SaveManeger.SetDartsScore((int)score);
                 isEnd = true;
             }
         }

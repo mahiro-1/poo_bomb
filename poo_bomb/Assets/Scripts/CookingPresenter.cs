@@ -115,6 +115,14 @@ public class CookingPresenter : MonoBehaviour
         isGameStart = true;
         isMusicPlay = false;
     }
+    void GameEnd(){
+        isGameStart = false;
+        Invoke(nameof(GameEndWait), 3f);
+    }
+    void GameEndWait(){
+        SaveManeger.SetCookingScore((int)score);
+        SceneLoader.NextScene();
+    }
     void ShowJadgeText(Jadges j){
         TextMeshProUGUI ntext = Instantiate<TextMeshProUGUI>(jadgeText,new Vector3(0f,0f,0f),Quaternion.identity);
         ntext.transform.SetParent(canvas.transform, false);
@@ -239,14 +247,14 @@ public class CookingPresenter : MonoBehaviour
             gameCount = ngameCount;
             if(gameCount >= endGameCount){
                 //ゲーム終了処理
-                isGameStart = false;
-                SceneLoader.NextScene();
+                GameEnd();
                 return;
             }
             //ノーツ生成判定
             foreach(int block in notesAddress[gameCount])
             {
                 GameObject nnote = Instantiate(Note, new Vector3(blockPos[block], 1.75f, 0f), Quaternion.Euler(0, 0, 90));
+                nnote.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0f, -moveSpeed);
                 nowNotes.Add(nnote);
             }
         }
@@ -255,7 +263,6 @@ public class CookingPresenter : MonoBehaviour
         List<GameObject> destroyNotes = new List<GameObject>();
         foreach (var x in nowNotes)
         {
-            x.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0f, -moveSpeed);
             if (x.transform.position.y < -5.0f)
             {
                 //Miss

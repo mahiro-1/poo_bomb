@@ -69,6 +69,18 @@ public static class SaveManeger
     {
         onceScore.DartsScore = s;
     }
+    public static int GetCookingScore()
+    {
+        return onceScore.CookingScore;
+    }
+    public static int GetDashScore()
+    {
+        return onceScore.DashScore;
+    }
+    public static int GetDartsScore()
+    {
+        return onceScore.DartsScore;
+    }
 
     public static List<int> getLastScore()
     {

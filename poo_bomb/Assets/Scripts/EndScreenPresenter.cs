@@ -12,10 +12,11 @@ public class EndscreenPresenter : MonoBehaviour
 {
 
     [SerializeField] public Button end_button;
-    [SerializeField] private string Startscreen; //シーン名を記述
+    [SerializeField] private TextMeshProUGUI scoreText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        scoreText.text = "スコア\nCooking	:" + SaveManeger.GetCookingScore().ToString() + "\nDash	:"+ SaveManeger.GetDashScore().ToString() +"\nDarts	:" + SaveManeger.GetDartsScore().ToString() + "\nTotal	:" + (SaveManeger.GetCookingScore()+SaveManeger.GetDashScore()+SaveManeger.GetDartsScore()).ToString();
         end_button.OnClickAsObservable().Subscribe(x =>
         {
             //テスト用！後で消してねーーーーーーーーーーーーーー
