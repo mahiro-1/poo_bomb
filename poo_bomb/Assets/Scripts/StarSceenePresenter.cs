@@ -12,24 +12,31 @@ public class StarSceenePresenter : MonoBehaviour
     [SerializeField] public Button start_button;
     [SerializeField] public Button option_button;
     [SerializeField] public Button score_button;
+    [SerializeField] private SoundPlayer soundPlayer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         SceneLoader.Init();
         SaveManeger.Init();
-        start_button.OnClickAsObservable().Subscribe(x => {
-            Debug.Log("START！");
-            //SceneManager.LoadScene("Cooking");
-            SceneLoader.NextScene();
+        start_button.OnClickAsObservable().Subscribe(x =>
+        {
+            soundPlayer.PlaySound();
+            Observable.Timer(System.TimeSpan.FromSeconds(0.5)) // 0.5秒待つ
+        .Subscribe(__ => SceneLoader.NextScene());
         });
-        option_button.OnClickAsObservable().Subscribe(x => {
-            Debug.Log("OPTION！");
+        option_button.OnClickAsObservable().Subscribe(x =>
+        {
+            soundPlayer.PlaySound();
+            Observable.Timer(System.TimeSpan.FromSeconds(0.5)) // 0.5秒待つ
+        .Subscribe(__ => SceneLoader.GoOptionScreen());
             SceneLoader.GoOptionScreen();
         });
-        score_button.OnClickAsObservable().Subscribe(x => {
-            Debug.Log("SCORE！");
-            //SceneManager.LoadScene("ScoreScreen");
-            SceneLoader.GoScoreScreen();
+        score_button.OnClickAsObservable().Subscribe(x =>
+        {
+            soundPlayer.PlaySound();
+            Observable.Timer(System.TimeSpan.FromSeconds(0.5)) // 0.5秒待つ
+        .Subscribe(__ => SceneLoader.GoScoreScreen());
         });
     }
 

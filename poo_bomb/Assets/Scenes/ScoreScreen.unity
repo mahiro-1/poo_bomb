@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 761283932}
   - component: {fileID: 761283931}
   - component: {fileID: 761283930}
+  - component: {fileID: 761283934}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -223,6 +224,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &761283934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761283929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61b7c7d45391f0249b9731fc858d5373, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundClip: {fileID: 8300000, guid: 63bec51000e7e44428abe313cc22891b, type: 3}
 --- !u!1 &839619718
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,6 +847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1912586095}
   return_button: {fileID: 1363625576}
+  soundPlayer: {fileID: 761283934}
 --- !u!1 &1912586093
 GameObject:
   m_ObjectHideFlags: 0

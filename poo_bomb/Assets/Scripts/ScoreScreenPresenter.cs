@@ -8,6 +8,8 @@ public class ScoreScreenPresenter : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Button return_button;
+    [SerializeField] private SoundPlayer soundPlayer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -16,7 +18,9 @@ public class ScoreScreenPresenter : MonoBehaviour
 
         return_button.OnClickAsObservable().Subscribe(x =>
         {
-            SceneLoader.ReturnStartScreen();
+            soundPlayer.PlaySound();
+            Observable.Timer(System.TimeSpan.FromSeconds(0.5)) // 0.5秒待つ
+        .Subscribe(__ => SceneLoader.ReturnStartScreen());
         });
 
     }
