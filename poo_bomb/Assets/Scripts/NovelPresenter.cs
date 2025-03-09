@@ -47,7 +47,7 @@ public class Presenter : MonoBehaviour
         {
             SetStoryElement(storyIndex, textIndex);
         }
-        Observable.Timer(System.TimeSpan.FromSeconds(2.0)) // 2.0秒待つ
+        Observable.Timer(System.TimeSpan.FromSeconds(1.5)) // 1.5秒待つ
         .Subscribe(__ => endflag = false);
     }
 
