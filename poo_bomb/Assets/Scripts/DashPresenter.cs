@@ -6,6 +6,7 @@ using UniRx;
 using UniRx.Triggers;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DashPresenter : MonoBehaviour
 {
@@ -20,10 +21,13 @@ public class DashPresenter : MonoBehaviour
     private Vector2 startTouchPosition;
     private Vector2 endTouchPosition;
     [SerializeField] private float x_coordinate_from_camera = 0f;
+    [SerializeField] private int maxCoin = 20;
+    [SerializeField] private GameObject resultPanel;
     private int limit_flag = 0;
     private int countCoin = 0;
     private bool isMoveChange = true;
     private bool isSwipe = false;
+    private int CountHitObstacle = 0;
 
     enum TurnDirection
     {
@@ -33,6 +37,8 @@ public class DashPresenter : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        resultPanel.SetActive(false);
+        resultPanel.transform.GetChild(2).gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(x => SceneLoader.NextScene());
         player.OnTriggerEnterAsObservable().Subscribe(x =>
         {
             if (x.gameObject.tag == "coin")
@@ -43,6 +49,7 @@ public class DashPresenter : MonoBehaviour
             else if (x.gameObject.tag == "unko")
             {
                 countCoin -= 3;
+                CountHitObstacle++;
                 if (countCoin < 0) countCoin = 0;
                 Destroy(x.gameObject);
             }
@@ -77,8 +84,23 @@ public class DashPresenter : MonoBehaviour
             }
         }
     }
+    private void GameEnd(){
+        SaveManeger.SetDashScore(GetScore());
+        BGMPlayer.Play();
+        resultPanel.SetActive(true);
+        resultPanel.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text 
+            = "取れたコイン	："+ countCoin.ToString() +"\n障害物	："+ CountHitObstacle.ToString() +"\n--------------------------\n合計得点	：" + GetScore().ToString();
+    }
+    int GetScore(){
+        float score = countCoin * (1000f / maxCoin);
+        return (int)score;
+    }
+    
     void FixedUpdate()
     {
+        if(routeFlag == 3){
+            GameEnd();
+        }
         ProcessSwipe();
         if (isMoveChange)
         {

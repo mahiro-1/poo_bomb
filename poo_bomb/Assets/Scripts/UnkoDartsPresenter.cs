@@ -29,6 +29,13 @@ public class UnkoDartsPresenter : MonoBehaviour
     [SerializeField] private float countdown = 60.0f;
     [SerializeField] public TextMeshProUGUI timeText;
     [SerializeField] private SoundPlayer soundPlayer;
+    [SerializeField] private GameObject resultPanel;
+    private int[] hitColor = {0, 0, 0};
+    enum Colors{
+        Red,
+        Green,
+        Blue
+    }
     public int delay = 5; //遅延させたい秒数
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -37,6 +44,8 @@ public class UnkoDartsPresenter : MonoBehaviour
         score = 0f;
         unkoflag = false;
         isEnd = false;
+        resultPanel.SetActive(false);
+        resultPanel.transform.GetChild(2).gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(x => SceneLoader.NextScene());
         //UniRxで書いているよ。画面がクリックされたらsubscribeの中の処理が実行される。
         Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0) && !unkoflag).Subscribe(_ =>
         {
@@ -54,16 +63,19 @@ public class UnkoDartsPresenter : MonoBehaviour
             if (difx <= 0.2)
             {
                 score += maxScore / maxPoint * 3;
+                hitColor[(int)Colors.Red]++;
                 //Debug.Log("point 3!");
             }
             else if (difx <= 0.6)
             {
                 score += maxScore / maxPoint * 2;
+                hitColor[(int)Colors.Green]++;
                 //Debug.Log("point 2!");
             }
             else
             {
                 score += maxScore / maxPoint * 1;
+                hitColor[(int)Colors.Blue]++;
                 //Debug.Log("point 1!");
             }
             scoreBoard.text = "Score: " + Math.Floor(score).ToString();
@@ -95,16 +107,17 @@ public class UnkoDartsPresenter : MonoBehaviour
             unkoflag = true;
             if (!isEnd)
             {
-                Invoke(nameof(SceneLoad), delay);
+                Invoke(nameof(ShowResult), delay);
                 SaveManeger.SetDartsScore((int)score);
                 isEnd = true;
             }
         }
     }
-    void SceneLoad()
+    void ShowResult()
     {
-        //SceneManager.LoadScene("EndScreen");
-        SceneLoader.NextScene();
+        resultPanel.SetActive(true);
+        resultPanel.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text 
+            = "赤にあてた回数："+ hitColor[(int)Colors.Red].ToString() +"\n緑にあてた回数："+hitColor[(int)Colors.Green].ToString()+"\n青にあてた回数："+ hitColor[(int)Colors.Blue].ToString() +"\n--------------------------\n合計得点	　："+ ((int)score).ToString();
     }
 
     //ポールをコルーチンを使って動かす
