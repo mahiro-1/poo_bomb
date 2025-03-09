@@ -24,6 +24,8 @@ public class DashPresenter : MonoBehaviour
     private int countCoin = 0;
     private bool isMoveChange = true;
     private bool isSwipe = false;
+    [SerializeField] private SoundPlayer soundPlayer;
+    [SerializeField] private SoundPlayer soundPlayer1;
 
     enum TurnDirection
     {
@@ -38,11 +40,13 @@ public class DashPresenter : MonoBehaviour
             if (x.gameObject.tag == "coin")
             {
                 countCoin++;
+                soundPlayer.PlaySound();
                 Destroy(x.gameObject);
             }
             else if (x.gameObject.tag == "unko")
             {
                 countCoin -= 3;
+                soundPlayer1.PlaySound();
                 if (countCoin < 0) countCoin = 0;
                 Destroy(x.gameObject);
             }
