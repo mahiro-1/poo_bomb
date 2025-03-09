@@ -13,18 +13,18 @@ public class EndscreenPresenter : MonoBehaviour
 
     [SerializeField] public Button end_button;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private SoundPlayer soundPlayer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        scoreText.text = "スコア\nCooking	:" + SaveManeger.GetCookingScore().ToString() + "\nDash	:"+ SaveManeger.GetDashScore().ToString() +"\nDarts	:" + SaveManeger.GetDartsScore().ToString() + "\nTotal	:" + (SaveManeger.GetCookingScore()+SaveManeger.GetDashScore()+SaveManeger.GetDartsScore()).ToString();
-        end_button.OnClickAsObservable().Subscribe(x =>
+        scoreText.text = "スコア\nCooking	:" + SaveManeger.GetCookingScore().ToString() + "\nDash	:" + SaveManeger.GetDashScore().ToString() + "\nDarts	:" + SaveManeger.GetDartsScore().ToString() + "\nTotal	:" + (SaveManeger.GetCookingScore() + SaveManeger.GetDashScore() + SaveManeger.GetDartsScore()).ToString();
+        end_button.OnClickAsObservable().Subscribe(_ =>
         {
-            //テスト用！後で消してねーーーーーーーーーーーーーー
-            //SaveManeger.Init();
-            //ーーーーーーーーーーーーーーーーーーーーーーーーー
             SaveManeger.SaveFile();
-            //SceneManager.LoadScene("StartScreen");
-            SceneLoader.NextScene();
+            soundPlayer.PlaySound();
+            Observable.Timer(System.TimeSpan.FromSeconds(0.5)) // 0.5秒待つ
+        .Subscribe(__ => SceneLoader.NextScene());
+
         });
     }
 
