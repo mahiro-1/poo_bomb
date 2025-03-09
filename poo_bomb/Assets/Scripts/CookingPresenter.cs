@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 
 public class CookingPresenter : MonoBehaviour
@@ -58,15 +59,20 @@ public class CookingPresenter : MonoBehaviour
     [SerializeField] private GameObject buttonPanel;
     [SerializeField] private TextMeshProUGUI jadgeText;
     [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject resultPanel;
     enum Jadges : int{
         Perfect,
         Good,
         Miss
     }
+    private int[] resultColor = {0, 0, 0};
     List<TextMeshProUGUI> jadgeTexts;
+    private bool isEnd = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        resultPanel.SetActive(false);
+        resultPanel.transform.GetChild(2).gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(x => SceneLoader.NextScene());
         MusicReading();
         startButton.OnClickAsObservable().Subscribe(x => {
             GameStart();
@@ -115,13 +121,13 @@ public class CookingPresenter : MonoBehaviour
         isGameStart = true;
         isMusicPlay = false;
     }
-    void GameEnd(){
+    IEnumerator GameEnd(){
+        yield return new WaitForSeconds(3.0f);
         isGameStart = false;
-        Invoke(nameof(GameEndWait), 3f);
-    }
-    void GameEndWait(){
+        resultPanel.SetActive(true);
+        resultPanel.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text 
+            = "Perfect	："+ resultColor[(int)Jadges.Perfect].ToString() +"\nGood	："+ resultColor[(int)Jadges.Good].ToString() +"\nMiss	："+ resultColor[(int)Jadges.Miss].ToString() +"\n--------------------------\n合計得点	：" + ((int)score).ToString();
         SaveManeger.SetCookingScore((int)score);
-        SceneLoader.NextScene();
     }
     void ShowJadgeText(Jadges j){
         TextMeshProUGUI ntext = Instantiate<TextMeshProUGUI>(jadgeText,new Vector3(0f,0f,0f),Quaternion.identity);
@@ -202,6 +208,7 @@ public class CookingPresenter : MonoBehaviour
                             nowNotes.Remove(CandidateNote);
                             combo++;
                             score += scorePerNotes * 0.5f;
+                            resultColor[(int)Jadges.Good]++;
                         }
                         else if(y < -4f){
                             //Perfect
@@ -210,6 +217,7 @@ public class CookingPresenter : MonoBehaviour
                             nowNotes.Remove(CandidateNote);
                             combo++;
                             score += scorePerNotes * 1.0f;
+                            resultColor[(int)Jadges.Perfect]++;
                         }
                         else if(y < -3.5f){
                             //Good
@@ -218,6 +226,7 @@ public class CookingPresenter : MonoBehaviour
                             nowNotes.Remove(CandidateNote);
                             combo++;
                             score += scorePerNotes * 0.5f;
+                            resultColor[(int)Jadges.Good]++;
                         }
                         else if(y < -3f){
                             //Miss
@@ -225,6 +234,7 @@ public class CookingPresenter : MonoBehaviour
                             Destroy(CandidateNote);
                             nowNotes.Remove(CandidateNote);
                             combo = 0;
+                            resultColor[(int)Jadges.Miss]++;
                         }
 
                     }
@@ -245,9 +255,10 @@ public class CookingPresenter : MonoBehaviour
         //同じカウントで複数回ノーツ生成処理が呼ばれないようにする分岐処理
         if(gameCount != ngameCount){
             gameCount = ngameCount;
-            if(gameCount >= endGameCount){
+            if(gameCount >= endGameCount && !isEnd){
                 //ゲーム終了処理
-                GameEnd();
+                isEnd = true;
+                StartCoroutine(GameEnd());
                 return;
             }
             //ノーツ生成判定
@@ -269,6 +280,7 @@ public class CookingPresenter : MonoBehaviour
                 ShowJadgeText(Jadges.Miss);
                 destroyNotes.Add(x);
                 combo = 0;
+                resultColor[(int)Jadges.Miss]++;
             }
         }
         foreach (var x in destroyNotes)
