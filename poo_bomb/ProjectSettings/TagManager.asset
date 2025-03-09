@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Capsule
   - coin
+  - unko
   layers:
   - Default
   - TransparentFX
