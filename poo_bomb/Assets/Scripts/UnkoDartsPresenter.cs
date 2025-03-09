@@ -28,6 +28,7 @@ public class UnkoDartsPresenter : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreBoard;
     [SerializeField] private float countdown = 60.0f;
     [SerializeField] public TextMeshProUGUI timeText;
+    [SerializeField] private SoundPlayer soundPlayer;
     public int delay = 5; //遅延させたい秒数
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,6 +40,7 @@ public class UnkoDartsPresenter : MonoBehaviour
         //UniRxで書いているよ。画面がクリックされたらsubscribeの中の処理が実行される。
         Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0) && !unkoflag).Subscribe(_ =>
         {
+            soundPlayer.PlaySound();
             CreateCapsule();
             unkoflag = true;
         });
@@ -91,7 +93,8 @@ public class UnkoDartsPresenter : MonoBehaviour
         {
             timeText.text = "終了!";
             unkoflag = true;
-            if(!isEnd){
+            if (!isEnd)
+            {
                 Invoke(nameof(SceneLoad), delay);
                 SaveManeger.SetDartsScore((int)score);
                 isEnd = true;
