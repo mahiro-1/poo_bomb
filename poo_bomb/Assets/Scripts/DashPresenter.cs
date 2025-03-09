@@ -33,7 +33,8 @@ public class DashPresenter : MonoBehaviour
         {
             countCoin++;
             Debug.Log("coin get");
-        });
+            Destroy(x.gameObject);
+        }).AddTo(this);
     }
     private IEnumerator Turn(TurnDirection t){
         Vector3 turnVector = new Vector3();
@@ -132,10 +133,11 @@ public class DashPresenter : MonoBehaviour
             isMoveChange = true;
         }
         player.transform.position = pos;
+        playerCamera.transform.position = player.transform.position;
     }
     void LateUpdate()
     {
-        playerCamera.transform.position = player.transform.position;
+        
     }
 
     private void DetectSwipe()
@@ -153,7 +155,7 @@ public class DashPresenter : MonoBehaviour
 
     private void ProcessSwipe()
     {
-        Vector2 swipeVector = endTouchPosition - startTouchPosition;
+        Vector3 swipeVector = endTouchPosition - startTouchPosition;
 
         if (swipeVector.magnitude < swipeThreshold) return; // 閾値以下なら無視
 
