@@ -15,9 +15,9 @@ MonoBehaviour:
   stories:
   - Background: {fileID: 1716783696513132305, guid: 74ba653e50449e54ea8f49c269889f60, type: 3}
     CharacterImage: {fileID: 5560357717693248666, guid: 349ad682fb17bb640989ee3c8ad3a7b4, type: 3}
-    StoryText: 
+    StoryText: "\u3075\u3045\u30FC\u30B9\u30C3\u30AD\u30EA\u3057\u305F\u3067"
     CharacterName: "\u5C71\u68A8\u3055\u3093"
   - Background: {fileID: 1716783696513132305, guid: 74ba653e50449e54ea8f49c269889f60, type: 3}
     CharacterImage: {fileID: -3233248230764381858, guid: 21ab77e988998b644a0b415f2d629bbb, type: 3}
-    StoryText: "\u4FFA\u3089\u306F\u89AA\u53CB\u3060\uFF01"
+    StoryText: "\u904A\u3093\u3067\u304F\u308C\u3066\u3042\u308A\u304C\u3068\u306A\uFF01"
     CharacterName: "\u5C71\u68A8\u3055\u3093"
