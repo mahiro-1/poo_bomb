@@ -14,10 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stories:
   - Background: {fileID: 1716783696513132305, guid: 74ba653e50449e54ea8f49c269889f60, type: 3}
-    CharacterImage: {fileID: 5560357717693248666, guid: 349ad682fb17bb640989ee3c8ad3a7b4, type: 3}
+    CharacterImage: {fileID: -3233248230764381858, guid: 21ab77e988998b644a0b415f2d629bbb, type: 3}
     StoryText: "\u3084\u3063\u3068\u5BB6\u306B\u3064\u3044\u305F\uFF01"
     CharacterName: "\u5C71\u68A8\u3055\u3093"
   - Background: {fileID: 1716783696513132305, guid: 74ba653e50449e54ea8f49c269889f60, type: 3}
-    CharacterImage: {fileID: -8490425521646422072, guid: 99334acc903eb1442b47770e2ab9af86, type: 3}
-    StoryText: "\u4FFA\u3089\u306F\u89AA\u53CB\u3060\uFF01"
+    CharacterImage: {fileID: -7507346280330510195, guid: b445e0acf897f464a82dc56808baf6e2, type: 3}
+    StoryText: "\u30C8\u30A4\u30EC\u3059\u308B\u524D\u306B\u3053\u3053\u3067\u4E00\u53E5"
+    CharacterName: "\u5C71\u68A8\u3055\u3093"
+  - Background: {fileID: 1716783696513132305, guid: 74ba653e50449e54ea8f49c269889f60, type: 3}
+    CharacterImage: {fileID: -3233248230764381858, guid: 21ab77e988998b644a0b415f2d629bbb, type: 3}
+    StoryText: "\u4FFA\u305F\u3061\u306F\u3000\u4F55\u5E74\u7D4C\u3063\u3066\u3082\u3000\u89AA\u53CB\u3060\uFF01"
+    CharacterName: "\u5C71\u68A8\u3055\u3093"
+  - Background: {fileID: 1716783696513132305, guid: 74ba653e50449e54ea8f49c269889f60, type: 3}
+    CharacterImage: {fileID: 5560357717693248666, guid: 349ad682fb17bb640989ee3c8ad3a7b4, type: 3}
+    StoryText: "\u3046\u3063\u2026\u5371\u306A\u3044\u6F0F\u308C\u308B"
     CharacterName: "\u5C71\u68A8\u3055\u3093"

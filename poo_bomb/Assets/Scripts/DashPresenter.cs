@@ -28,6 +28,8 @@ public class DashPresenter : MonoBehaviour
     private bool isMoveChange = true;
     private bool isSwipe = false;
     private int CountHitObstacle = 0;
+    [SerializeField] private SoundPlayer soundPlayer;
+    [SerializeField] private SoundPlayer soundPlayer1;
 
     enum TurnDirection
     {
@@ -44,12 +46,14 @@ public class DashPresenter : MonoBehaviour
             if (x.gameObject.tag == "coin")
             {
                 countCoin++;
+                soundPlayer.PlaySound();
                 Destroy(x.gameObject);
             }
             else if (x.gameObject.tag == "unko")
             {
                 countCoin -= 3;
                 CountHitObstacle++;
+                soundPlayer1.PlaySound();
                 if (countCoin < 0) countCoin = 0;
                 Destroy(x.gameObject);
             }
@@ -84,21 +88,24 @@ public class DashPresenter : MonoBehaviour
             }
         }
     }
-    private void GameEnd(){
+    private void GameEnd()
+    {
         SaveManeger.SetDashScore(GetScore());
         BGMPlayer.Play();
         resultPanel.SetActive(true);
         resultPanel.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text 
             = "取れたコイン	："+ countCoin.ToString() +"\n障害物	："+ CountHitObstacle.ToString() +"\n--------------------------\n合計得点	：" + GetScore().ToString();
     }
-    int GetScore(){
+    int GetScore()
+    {
         float score = countCoin * (1000f / maxCoin);
         return (int)score;
     }
-    
+
     void FixedUpdate()
     {
-        if(routeFlag == 3){
+        if (routeFlag == 3)
+        {
             GameEnd();
         }
         ProcessSwipe();
