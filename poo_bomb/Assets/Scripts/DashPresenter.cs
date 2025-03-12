@@ -38,7 +38,7 @@ public class DashPresenter : MonoBehaviour
     void Awake()
     {
         resultPanel.SetActive(false);
-        resultPanel.transform.GetChild(2).gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(x => SceneLoader.NextScene());
+        resultPanel.transform.GetChild(3).gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(x => SceneLoader.NextScene());
         player.OnTriggerEnterAsObservable().Subscribe(x =>
         {
             if (x.gameObject.tag == "coin")
@@ -88,7 +88,7 @@ public class DashPresenter : MonoBehaviour
         SaveManeger.SetDashScore(GetScore());
         BGMPlayer.Play();
         resultPanel.SetActive(true);
-        resultPanel.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text 
+        resultPanel.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text 
             = "取れたコイン	："+ countCoin.ToString() +"\n障害物	："+ CountHitObstacle.ToString() +"\n--------------------------\n合計得点	：" + GetScore().ToString();
     }
     int GetScore(){

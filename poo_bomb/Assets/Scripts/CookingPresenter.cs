@@ -245,6 +245,7 @@ public class CookingPresenter : MonoBehaviour
     void FixedUpdate()
     {
         if(!isGameStart) return;
+        if(isEnd) return;
         MoveJadgeText();
         if(elapsedTime >= musicOffset && !isMusicPlay){
             rythmGameAudio.Play();
