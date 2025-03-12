@@ -123,6 +123,8 @@ public class CookingPresenter : MonoBehaviour
     }
     IEnumerator GameEnd(){
         yield return new WaitForSeconds(3.0f);
+        rythmGameAudio.Stop();
+        BGMPlayer.Play();
         isGameStart = false;
         resultPanel.SetActive(true);
         resultPanel.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text 
