@@ -12,6 +12,7 @@ public class DashPresenter : MonoBehaviour
 {
     [SerializeField] private GameObject playerCamera;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject jyanbo;
     [SerializeField] private TextMeshProUGUI coinText;
     //[SerializeField] private GameObject moveSpace;
     private int routeFlag = 0;
@@ -30,6 +31,8 @@ public class DashPresenter : MonoBehaviour
     private int CountHitObstacle = 0;
     [SerializeField] private SoundPlayer soundPlayer;
     [SerializeField] private SoundPlayer soundPlayer1;
+    [SerializeField] private SoundPlayer soundPlayer2;
+    Vector3 jyanbo_pos;
 
     enum TurnDirection
     {
@@ -55,6 +58,12 @@ public class DashPresenter : MonoBehaviour
                 CountHitObstacle++;
                 soundPlayer1.PlaySound();
                 if (countCoin < 0) countCoin = 0;
+                Destroy(x.gameObject);
+            }
+            else if (x.gameObject.tag == "jyanbo")
+            {
+                countCoin -= 5;
+                soundPlayer2.PlaySound();
                 Destroy(x.gameObject);
             }
         }).AddTo(this);
@@ -93,8 +102,8 @@ public class DashPresenter : MonoBehaviour
         SaveManeger.SetDashScore(GetScore());
         BGMPlayer.Play();
         resultPanel.SetActive(true);
-        resultPanel.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text 
-            = "取れたコイン	："+ countCoin.ToString() +"\n障害物	："+ CountHitObstacle.ToString() +"\n--------------------------\n合計得点	：" + GetScore().ToString();
+        resultPanel.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text
+            = "取れたコイン	：" + countCoin.ToString() + "\n障害物	：" + CountHitObstacle.ToString() + "\n--------------------------\n合計得点	：" + GetScore().ToString();
     }
     int GetScore()
     {
@@ -147,6 +156,10 @@ public class DashPresenter : MonoBehaviour
         }
         player.transform.position = pos;
         playerCamera.transform.position = player.transform.position;
+
+        jyanbo_pos = jyanbo.transform.position;
+        jyanbo_pos = new Vector3(jyanbo_pos.x + Mathf.Cos(Time.time) * 0.1f, jyanbo_pos.y, jyanbo_pos.z);
+        jyanbo.transform.position = jyanbo_pos; // 反映する
     }
     void LateUpdate()
     {
