@@ -22,7 +22,7 @@ public class EndscreenPresenter : MonoBehaviour
         {
             SaveManeger.SaveFile();
             soundPlayer.PlaySound();
-            Observable.Timer(System.TimeSpan.FromSeconds(0.5)) // 0.5秒待つ
+            Observable.Timer(System.TimeSpan.FromSeconds(0.3)) // 0.3秒待つ
         .Subscribe(__ => SceneLoader.NextScene());
 
         });
