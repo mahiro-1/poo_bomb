@@ -29,7 +29,7 @@ public class Presenter : MonoBehaviour
             .Subscribe(_ =>
             {
                 soundPlayer.PlaySound();
-                Observable.Timer(System.TimeSpan.FromSeconds(0.5)) // 0.5秒待つ
+                Observable.Timer(System.TimeSpan.FromSeconds(0.2)) // 0.5秒待つ
             .Subscribe(__ => OnNextText());
             })
             .AddTo(this);

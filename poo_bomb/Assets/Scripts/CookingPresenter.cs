@@ -60,6 +60,9 @@ public class CookingPresenter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI jadgeText;
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject resultPanel;
+    [SerializeField] private Image image;
+    [SerializeField] private Sprite[] tyahan;
+    private int imageCount = 1;
     enum Jadges : int{
         Perfect,
         Good,
@@ -130,6 +133,28 @@ public class CookingPresenter : MonoBehaviour
         resultPanel.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text 
             = "Perfect	："+ resultColor[(int)Jadges.Perfect].ToString() +"\nGood	："+ resultColor[(int)Jadges.Good].ToString() +"\nMiss	："+ resultColor[(int)Jadges.Miss].ToString() +"\n--------------------------\n合計得点	：" + ((int)score).ToString();
         SaveManeger.SetCookingScore((int)score);
+    }
+    void showImage(int g){
+        int nimageCount = -1;
+        if(g <= 40) nimageCount = 1;
+        else if(g <= 80) nimageCount = 2;
+        else if(g <= 120) nimageCount = 3;
+        else if(g <= 160) nimageCount = 4;
+        else if(g <= 200) nimageCount = 5;
+        else if(g <= 240) nimageCount = 6;
+        else if(g <= 260) nimageCount = 7;
+        else if(g <= 280) nimageCount = 8;
+        else if(g <= 300) nimageCount = 9;
+        else if(g <= 320) nimageCount = 10;
+        else if(g <= 360) nimageCount = 11;
+        else if(g <= 400) nimageCount = 12;
+        else if(g <= 440) nimageCount = 13;
+        else if(g <= 480) nimageCount = 14;
+        else if(g <= 516) nimageCount = 15;
+        if(nimageCount != imageCount && nimageCount != -1){
+            imageCount = nimageCount;
+            image.sprite = tyahan[imageCount - 1];
+        }
     }
     void ShowJadgeText(Jadges j){
         TextMeshProUGUI ntext = Instantiate<TextMeshProUGUI>(jadgeText,new Vector3(0f,0f,0f),Quaternion.identity);
@@ -258,6 +283,8 @@ public class CookingPresenter : MonoBehaviour
         //同じカウントで複数回ノーツ生成処理が呼ばれないようにする分岐処理
         if(gameCount != ngameCount){
             gameCount = ngameCount;
+
+            showImage(gameCount);
             if(gameCount >= endGameCount && !isEnd){
                 //ゲーム終了処理
                 isEnd = true;
