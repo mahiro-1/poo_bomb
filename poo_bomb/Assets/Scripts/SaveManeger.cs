@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class SaveManeger
@@ -21,7 +23,7 @@ public static class SaveManeger
     private static OnceScore onceScore;
 
     private static string fileName = "save_data.json";
-    private static string filePath;
+    public static string filePath;
 
     //新しくゲームが始まったときは必ず呼ぶこと！
     public static void Init()
@@ -40,7 +42,7 @@ public static class SaveManeger
         if (!File.Exists(filePath))
         {
             StreamWriter wr = new StreamWriter(filePath, false);
-            wr.WriteLine("{\"scores\":[{\"CookingScore\":0,\"DashScore\":0,\"DartsScore\":0},{\"CookingScore\":0,\"DashScore\":0,\"DartsScore\":0}]}");
+            wr.WriteLine("{\"scores\":[{\"CookingScore\":0,\"DashScore\":0,\"DartsScore\":0}]}");
             wr.Close();
         }
         StreamReader rd = new StreamReader(filePath);
@@ -88,12 +90,27 @@ public static class SaveManeger
         int lastIndex = saveData.scores.Count - 1;
         return new List<int>() { saveData.scores[lastIndex].CookingScore, saveData.scores[lastIndex].DashScore, saveData.scores[lastIndex].DartsScore };
     }
+    public static List<OnceScore> getRanking(){
+        LoadFile();
+        List<Tuple<int, int>> sortScore = new List<Tuple<int, int>>();
+        for(int i = 0; i < saveData.scores.Count; i++){
+            sortScore.Add(new Tuple<int, int>(saveData.scores[i].CookingScore + saveData.scores[i].DashScore + saveData.scores[i].DartsScore, i));
+        }
+        Tuple<int, int>[] sorted = sortScore.OrderBy(x => x.Item1).ToArray();
+        List<OnceScore> rscore = new List<OnceScore>();
+        int maxindex = Math.Min(10, sorted.Length);
+        for(int i = maxindex - 1; i >= 0; i--){
+            rscore.Add(saveData.scores[sorted[i].Item2]);
+        }
+        return rscore;
+    }
     //セーブデータを全削除！！迂闊に使わないこと！
     public static void AllClear()
     {
-        string json = "";
+        string json = "{\"scores\":[{\"CookingScore\":0,\"DashScore\":0,\"DartsScore\":0}]}";
         StreamWriter wr = new StreamWriter(filePath, false);
         wr.WriteLine(json);
         wr.Close();
+        LoadFile();
     }
 }
