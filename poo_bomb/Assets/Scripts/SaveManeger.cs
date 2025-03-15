@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public static class SaveManeger
 {
@@ -19,11 +20,18 @@ public static class SaveManeger
     {
         public List<OnceScore> scores;
     }
+    [Serializable] public class Setting
+    {
+        public float offset; //Cookingのノーツと音楽のオフセットms
+    }
+    private static Setting setting;
     private static SaveData saveData;
     private static OnceScore onceScore;
 
     private static string fileName = "save_data.json";
     public static string filePath;
+    private static string settingFileName = "setting.json";
+    public static string settingFilePath;
 
     //新しくゲームが始まったときは必ず呼ぶこと！
     public static void Init()
@@ -36,6 +44,34 @@ public static class SaveManeger
         onceScore.DashScore = 0;
         onceScore.DartsScore = 0;
         
+        setting = new Setting();
+        settingFilePath = Application.persistentDataPath + "/" + settingFileName;
+        LoadSetting();
+    }
+    public static void LoadSetting(){
+        if (!File.Exists(settingFilePath))
+        {
+            StreamWriter wr = new StreamWriter(settingFilePath, false);
+            wr.WriteLine("{\"offset\":1}");
+            wr.Close();
+        }
+        StreamReader rd = new StreamReader(settingFilePath);
+        string json = rd.ReadToEnd();
+        rd.Close();
+        Debug.Log(json);
+        setting = JsonUtility.FromJson<Setting>(json);
+    }
+    public static float GetOffset(){
+        return setting.offset;
+    }
+    public static void SetOffset(float o){
+        setting.offset = o;
+    }
+    public static void SaveSetting(){
+        string json = JsonUtility.ToJson(setting);
+        StreamWriter wr = new StreamWriter(settingFilePath, false);
+        wr.WriteLine(json);
+        wr.Close();
     }
     public static void LoadFile()
     {

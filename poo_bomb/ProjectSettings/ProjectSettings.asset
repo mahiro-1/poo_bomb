@@ -884,7 +884,7 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
-    Build: 0
+    Build: 1
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 

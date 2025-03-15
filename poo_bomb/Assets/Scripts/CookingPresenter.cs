@@ -74,6 +74,7 @@ public class CookingPresenter : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        musicOffset = SaveManeger.GetOffset();
         resultPanel.SetActive(false);
         resultPanel.transform.GetChild(2).gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(x => SceneLoader.NextScene());
         MusicReading();
